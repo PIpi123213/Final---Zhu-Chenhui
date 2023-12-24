@@ -7,7 +7,7 @@ public class movedirection : MonoBehaviour
 {
     // Start is called before the first frame update
     public Transform target; // 标志物的Transform
-    public float movementSpeed = 1.0f; // 角色移动速度
+    public static float movementSpeed = 1.0f; // 角色移动速度
     public Animator animator; // 角色的Animator组件
 
     void Start()
@@ -25,11 +25,7 @@ public class movedirection : MonoBehaviour
 
     void Update()
     {
-        if (carmove.isstrike)
-        {
-            movementSpeed = 0f;
-
-        }
+       
         // 计算朝向目标的方向
         Vector3 directionToTarget = (target.position - transform.position).normalized;
 

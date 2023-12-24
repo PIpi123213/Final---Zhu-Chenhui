@@ -28,13 +28,15 @@ public class escape : MonoBehaviour
 
 
             }
-            if (carmove.isstrike)
-            {
-                PlayDeathAnimation();
-
-            }
+            
         }
-        
+        if (carmove.isstrike)
+        {
+            PlayDeathAnimation();
+            movedirection.movementSpeed = 0;
+            characterController.isTrigger = false;
+            Explode();
+        }
 
 
     }
@@ -46,7 +48,7 @@ public class escape : MonoBehaviour
 
             string escapeStateName = "Death";
             animator.Play(escapeStateName, -1, 0f);
-
+            carmove.isstrike = false;
         }
     }
     void PlayEscapeAnimation()
@@ -68,16 +70,7 @@ public class escape : MonoBehaviour
     }
 
 
-    IEnumerator ReturnToDefaultAnimation()
-    {
-        yield return new WaitForSeconds(1.0f); // 延迟1秒钟，可以根据需要调整时间
-
-        // 指定默认走路动画的名字
-        string walkStateName = "Walk";
-
-        // 播放默认的走路动画
-        animator.Play(walkStateName, -1, 0f);
-    }
+    
     void SetIsEscaped(bool value)
     {
         // 确保 Animator 不为空
@@ -91,5 +84,21 @@ public class escape : MonoBehaviour
             Debug.LogWarning("Animator component is not assigned.");
         }
     }
-    
+    void Explode()
+    {
+        // 获取物体上的 Rigidbody 组件
+        Rigidbody rb = GetComponent<Rigidbody>();
+
+        // 如果 Rigidbody 组件不为空，给物体施加爆炸力
+        if (rb != null)
+        {
+            // 使用 AddExplosionForce 方法给物体施加爆炸力
+            rb.AddExplosionForce(explosionForce, transform.position, 0f);
+        }
+        else
+        {
+            Debug.LogWarning("Rigidbody component not found on the object.");
+        }
+    }
+
 }

@@ -29,11 +29,11 @@ public class carmove : MonoBehaviour
         {
             moveSpeed = 0f;
             isstrike = true;
-            Collider myCollider = GetComponent<Collider>();
+            /*Collider myCollider = GetComponent<Collider>();
             if (myCollider != null)
             {
                 myCollider.enabled = false;
-            }
+            }*/
         }
     }
 }
