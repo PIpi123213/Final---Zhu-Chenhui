@@ -5,10 +5,23 @@ using UnityEngine;
 public class carmove : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float moveSpeed = 5.0f; // 移动速度，可以在Inspector中设置
-    public static bool isstrike = false;
+    public float moveSpeed = 0f; // 移动速度，可以在Inspector中设置
+    //public static bool isstrike = false;
+    public start start;
+    private bool hasStarted = false;
     void Update()
     {
+        if (start.isstart && !characterController.isDead)
+        {
+            if (!hasStarted)
+            {
+                // 第一次满足条件，执行操作
+                moveSpeed = 5.0f;
+                hasStarted = true; // 将标志设置为 true，防止再次执行
+            }
+        }
+        
+       
         // 获取物体的Transform组件
         Transform objectTransform = transform;
 
@@ -27,13 +40,10 @@ public class carmove : MonoBehaviour
         // 检测碰撞的物体是否有 "car" 标签
         if (collision.gameObject.CompareTag("Player"))
         {
-            moveSpeed = 0f;
-            isstrike = true;
-            /*Collider myCollider = GetComponent<Collider>();
-            if (myCollider != null)
-            {
-                myCollider.enabled = false;
-            }*/
+            
+            
+            characterController.isDead = true;
+            enabled = false;
         }
     }
 }

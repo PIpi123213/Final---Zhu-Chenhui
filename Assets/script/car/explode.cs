@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class explode : MonoBehaviour
+public class Explode : MonoBehaviour
 {
     // Start is called before the first frame update
     public float explosionForce = 10.0f; // 爆炸力大小
@@ -12,19 +12,17 @@ public class explode : MonoBehaviour
     {
         // 在 Start 方法中触发爆炸
         
+
     }
-    private void Update()
+    void Update()
     {
-        if (characterController.isTrigger)
-        {
-            
-            if (escape.isEscaped)
+        escape component1 = GetComponent<escape>();
+        
+        if (component1.isEscaped)
             {
-                Explode();
-                escape.isEscaped = false;
-                characterController.isTrigger = false;
+                explodeforce();
             }
-        }
+        
     }
 
     IEnumerator DestroyAfterDelay()
@@ -34,8 +32,9 @@ public class explode : MonoBehaviour
         // 销毁物体
         Destroy(gameObject);
     }
-    void Explode()
+    public void explodeforce()
     {
+        
         // 获取物体上的 Rigidbody 组件
         Rigidbody rb = GetComponent<Rigidbody>();
 

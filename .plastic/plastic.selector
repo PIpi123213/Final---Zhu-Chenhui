@@ -1,4 +1,0 @@
-repository "Final --Zhu Chenhui@wechat_os_qy03xatxxyzcgfee4zuupeqhy@cloud.cn"
-  path "/"
-    br "/main"
-    co "/main"

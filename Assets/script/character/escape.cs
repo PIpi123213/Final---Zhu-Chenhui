@@ -2,15 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using static EventOption;
+using UnityEngine.UI;
+
 public class escape : MonoBehaviour
 {
     // Start is called before the first frame update
     public Animator animator;
-    public static bool isEscaped = false;
+    public bool isEscaped ;
     public float explosionForce = 10.0f;
+    public characterController characterController;
+    public eventDetect eventDetect;
+
+    public float decreaseSpeed = 0.1f; // 进度条减少速度
+    public float maxProgress = 1f; // 进度条最大值
+    public float timeLimit = 10f; // 时间限制
+    public float currentProgress = 0.3f;
+    public Slider progressBar;
+
     void Start()
     {
-        
+        isEscaped = false;
+        progressBar.value = Mathf.Clamp01(currentProgress);
+        progressBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -19,86 +33,80 @@ public class escape : MonoBehaviour
         
         if (characterController.isTrigger)
         {
-            // 如果检测到 istrigger 为 true，则传递给 Animator 并设置 isescaped 为 true
-            if (Input.GetKeyDown(KeyCode.S))
+            if (eventDetect.event2.ToString()!="Defence")
             {
                 
-                PlayEscapeAnimation();
-                isEscaped = true;
+                if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
+                {
 
+                    isEscaped = true;
+                    characterController.PlayEscapeAnimation();
+                    characterController.isTrigger = false;
+                    
+                    
+
+
+                }
 
             }
-            
+            else if(eventDetect.event2.ToString() == "Defence")
+            {
+                
+                progressBar.value = Mathf.MoveTowards(progressBar.value, 0f, decreaseSpeed * Time.deltaTime);
+                
+                if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
+                {
+                    progressBar.gameObject.SetActive(true);
+                    carmove carmove = GetComponent<carmove>();
+                    if (carmove != null)
+                    {
+                        carmove.moveSpeed = 0.0f;
+                        
+                    }
+                    progressBar.value += 0.1f;
+                    
+                    characterController.PlayEscapeAnimation2();
+                   
+
+                    // 减少进度条
+                    
+
+                    // 如果时间超过限制，显示失败文本
+                   
+
+                }
+                if (progressBar.value >= maxProgress)
+                {
+                    isEscaped = true;
+                    characterController.isTrigger = false;
+                    progressBar.gameObject.SetActive(false);
+
+                    characterController.SetIsEscaped(true);
+
+                }
+                else if (progressBar.value <= 0f)
+                {
+                    progressBar.gameObject.SetActive(false);
+                    carmove carmove = GetComponent<carmove>();
+                    if (carmove != null)
+                    {
+                        carmove.moveSpeed = 5.0f;
+
+                    }
+                }
+
+
+            }     
         }
-        if (carmove.isstrike)
+        if (characterController.isDead)
         {
-            PlayDeathAnimation();
-            movedirection.movementSpeed = 0;
+           
             characterController.isTrigger = false;
-            Explode();
-        }
-
-
-    }
-    void PlayDeathAnimation()
-    {
-        // 确保 Animator 不为空
-        if (animator != null)
-        {
-
-            string escapeStateName = "Death";
-            animator.Play(escapeStateName, -1, 0f);
-            carmove.isstrike = false;
-        }
-    }
-    void PlayEscapeAnimation()
-    {
-        // 确保 Animator 不为空
-        if (animator != null)
-        {
-            // 指定动画状态的名字，注意这里是动画状态的名字而不是参数名字
-            string escapeStateName = "Escape";
             
-            // 播放指定的动画状态
-            animator.Play(escapeStateName, -1, 0f);
-            SetIsEscaped(true);// 最后一个参数是 normalizedTime，在这里设置为 0 表示从动画的开始位置开始播放
         }
-        else
-        {
-            Debug.LogWarning("Animator component is not assigned.");
-        }
+
+
     }
-
-
     
-    void SetIsEscaped(bool value)
-    {
-        // 确保 Animator 不为空
-        if (animator != null)
-        {
-            // 通过设置 Animator 中的参数来传递值
-            animator.SetBool("isEscaped", value);
-        }
-        else
-        {
-            Debug.LogWarning("Animator component is not assigned.");
-        }
-    }
-    void Explode()
-    {
-        // 获取物体上的 Rigidbody 组件
-        Rigidbody rb = GetComponent<Rigidbody>();
-
-        // 如果 Rigidbody 组件不为空，给物体施加爆炸力
-        if (rb != null)
-        {
-            // 使用 AddExplosionForce 方法给物体施加爆炸力
-            rb.AddExplosionForce(explosionForce, transform.position, 0f);
-        }
-        else
-        {
-            Debug.LogWarning("Rigidbody component not found on the object.");
-        }
-    }
 
 }

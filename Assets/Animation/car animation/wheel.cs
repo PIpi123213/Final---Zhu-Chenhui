@@ -5,15 +5,36 @@ using UnityEngine;
 public class wheel : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float rotationSpeed = 1.0f; // 旋转速度，可以在Inspector中设置
+    public float rotationSpeed = 1.0f;
 
-    
-    
-        // 获取当前的旋转
-        void Update()
+    // 选择绕哪个轴旋转的枚举类型
+    public enum RotationAxis
+    {
+        X,
+        Y,
+        Z
+    }
+
+    public RotationAxis rotationAxis = RotationAxis.X; // 默认绕X轴旋转
+
+    // 获取当前的旋转
+    void Update()
+    {
+        // 使用 Rotate 方法在物体的局部坐标系中绕选定的轴旋转
+        switch (rotationAxis)
         {
-            // 使用Rotate方法在物体的局部坐标系中绕X轴旋转
-            transform.Rotate(Vector3.right, rotationSpeed * Time.deltaTime);
+            case RotationAxis.X:
+                transform.Rotate(Vector3.right, rotationSpeed * Time.deltaTime);
+                break;
+            case RotationAxis.Y:
+                transform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+                break;
+            case RotationAxis.Z:
+                transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+                break;
+            default:
+                break;
         }
-    
+    }
+
 }
