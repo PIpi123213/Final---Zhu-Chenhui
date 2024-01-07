@@ -6,6 +6,11 @@ TagManager:
   tags:
   - Event
   - Car
+  - MyBullet
+  - EnemyBullet
+  - Wall
+  - Start
+  - Win
   layers:
   - Default
   - TransparentFX

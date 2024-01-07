@@ -17,7 +17,7 @@ public class eventDetect : MonoBehaviour
     
     public EventOptions event2;
 
-
+    public Canvas targetCanvas;
     void OnTriggerEnter(Collider other)
     {
         // 检测碰撞的物体是否有 "Player" 标签
@@ -54,8 +54,8 @@ public class eventDetect : MonoBehaviour
             Inventory selectedInventory = keyboard[Random.Range(0, keyboard.Length)];
             
             keyname = selectedInventory.letter;
-
-            Canvas canvas = FindObjectOfType<Canvas>();
+            Canvas canvas = targetCanvas;
+            
 
             // 如果找到Canvas，生成预制体并放置在Canvas上
             if (canvas != null)

@@ -5,6 +5,7 @@ using UnityEngine;
 using static EventOption;
 using UnityEngine.UI;
 
+
 public class escape : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -16,25 +17,38 @@ public class escape : MonoBehaviour
 
     public float decreaseSpeed = 0.1f; // 进度条减少速度
     public float maxProgress = 1f; // 进度条最大值
-    public float timeLimit = 10f; // 时间限制
+    
     public float currentProgress = 0.3f;
     public Slider progressBar;
+    private bool isProgressBarCreated = false;
 
+    public float delayInSeconds = 5.0f;
     void Start()
     {
         isEscaped = false;
+        
         progressBar.value = Mathf.Clamp01(currentProgress);
-        progressBar.gameObject.SetActive(false);
+        //progressBar.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (isEscaped)
+        {
+            Invoke("DestroyObject", delayInSeconds);
+
+
+        }
+
+
+
         if (characterController.isTrigger)
         {
+            
             if (eventDetect.event2.ToString()!="Defence")
             {
+                
                 
                 if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
                 {
@@ -49,14 +63,24 @@ public class escape : MonoBehaviour
                 }
 
             }
+
             else if(eventDetect.event2.ToString() == "Defence")
             {
+                Canvas mainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
                 
-                progressBar.value = Mathf.MoveTowards(progressBar.value, 0f, decreaseSpeed * Time.deltaTime);
-                
+
                 if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
                 {
-                    progressBar.gameObject.SetActive(true);
+                    
+                    if (!isProgressBarCreated)
+                    {
+                        progressBar = Instantiate(progressBar, mainCanvas.transform);
+                        progressBar.value = Mathf.Clamp01(currentProgress);
+                        isProgressBarCreated = true;
+                    }
+                    
+
+                    //progressBar.gameObject.SetActive(true);
                     carmove carmove = GetComponent<carmove>();
                     if (carmove != null)
                     {
@@ -79,14 +103,17 @@ public class escape : MonoBehaviour
                 {
                     isEscaped = true;
                     characterController.isTrigger = false;
-                    progressBar.gameObject.SetActive(false);
-
+                    //progressBar.gameObject.SetActive(false);
+                    DestroyImmediate(progressBar.gameObject);
+                    isProgressBarCreated = false;
                     characterController.SetIsEscaped(true);
 
                 }
                 else if (progressBar.value <= 0f)
                 {
-                    progressBar.gameObject.SetActive(false);
+                    //progressBar.gameObject.SetActive(false);
+                    DestroyImmediate(progressBar.gameObject);
+                    isProgressBarCreated = false;
                     carmove carmove = GetComponent<carmove>();
                     if (carmove != null)
                     {
@@ -95,7 +122,7 @@ public class escape : MonoBehaviour
                     }
                 }
 
-
+                progressBar.value = Mathf.MoveTowards(progressBar.value, 0f, decreaseSpeed * Time.deltaTime);
             }     
         }
         if (characterController.isDead)
@@ -107,6 +134,10 @@ public class escape : MonoBehaviour
 
 
     }
-    
+    void DestroyObject()
+    {
+        // 销毁物体
+        Destroy(gameObject);
+    }
 
 }

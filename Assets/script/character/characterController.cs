@@ -26,7 +26,7 @@ public class characterController : MonoBehaviour
         if (isDead)
         {
             PlayDeathAnimation();
-
+            GameManager.isgameover = true;
         }
         // 如果当前动画为 "walking"
         if (stateInfo.IsName("Walk"))
@@ -135,7 +135,17 @@ public class characterController : MonoBehaviour
             Debug.LogWarning("Animator component is not assigned.");
         }
     }
+    void OnTriggerEnter(Collider other)
+    {
+        // 检测碰撞的物体是否有 "Player" 标签
+        if (other.CompareTag("Win"))
+        {
+            GameManager.isWin = true;
+            // 在控制台输出调试信息
 
+
+        }
+    }
 
 
 

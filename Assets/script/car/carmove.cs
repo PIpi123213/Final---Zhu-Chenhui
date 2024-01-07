@@ -6,6 +6,7 @@ public class carmove : MonoBehaviour
 {
     // Start is called before the first frame update
     public float moveSpeed = 0f; // 移动速度，可以在Inspector中设置
+    public float speed = 5.0f;
     //public static bool isstrike = false;
     public start start;
     private bool hasStarted = false;
@@ -16,7 +17,7 @@ public class carmove : MonoBehaviour
             if (!hasStarted)
             {
                 // 第一次满足条件，执行操作
-                moveSpeed = 5.0f;
+                moveSpeed = speed;
                 hasStarted = true; // 将标志设置为 true，防止再次执行
             }
         }
