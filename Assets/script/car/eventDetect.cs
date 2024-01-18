@@ -14,7 +14,7 @@ public class eventDetect : MonoBehaviour
     //public string event1;//Kick Jump
     public characterController characterController;
     private bool a = false;
-    
+    public bool b = false;
     public EventOptions event2;
 
     public Canvas targetCanvas;
@@ -23,6 +23,7 @@ public class eventDetect : MonoBehaviour
         // 检测碰撞的物体是否有 "Player" 标签
         if (other.CompareTag("Player"))
         {
+            b = true;
             if (!a)
             {
                 characterController.SetIsEscaped(false);

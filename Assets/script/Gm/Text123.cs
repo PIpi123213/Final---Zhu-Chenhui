@@ -21,6 +21,8 @@ public class Text123 : MonoBehaviour
         if (GameManager.isFirst)
         {
             Invoke("ShowText", delays[0]);
+            isCreate = false;
+            isCreate2 = false;
         }
         
 

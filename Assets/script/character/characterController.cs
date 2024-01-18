@@ -25,6 +25,7 @@ public class characterController : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if (isDead)
         {
+            isTrigger = false;
             PlayDeathAnimation();
             GameManager.isgameover = true;
         }
@@ -40,7 +41,7 @@ public class characterController : MonoBehaviour
         else
         {
             movedirection.movementSpeed = 0.0f;
-            //carmove.moveSpeed = 0.0f;
+            
             if (stateInfo.IsName("Jump"))
             {
                 if (isJump == false)
@@ -83,7 +84,7 @@ public class characterController : MonoBehaviour
         // 确保 Animator 不为空
         if (animator != null)
         {
-            Debug.Log("1");
+            
             string escapeStateName = escapeEvent;
 
 
@@ -141,6 +142,7 @@ public class characterController : MonoBehaviour
         if (other.CompareTag("Win"))
         {
             GameManager.isWin = true;
+            isTrigger = false;
             // 在控制台输出调试信息
 
 

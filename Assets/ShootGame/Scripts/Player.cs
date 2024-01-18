@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 
     public float yOffset = 0.2f;
     public GameObject explosionPF;
+    private bool a = false;
 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +37,11 @@ public class Player : MonoBehaviour
         }
         if (GameManager.score >= 50 && GameManager.score <= 100)
         {
-            fireRate = 7;
+            fireRate = 6;
         }
         else if (GameManager.score >= 100)
         {
-            fireRate = 10;
+            fireRate = 8;
         }
     }
 
@@ -57,11 +58,28 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        var dx = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
-        var dy = Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed;
+
+
+        var dx = Input.GetKey(KeyCode.LeftArrow) ? -1f : Input.GetKey(KeyCode.RightArrow) ? 1f : 0f;
+        var dy = Input.GetKey(KeyCode.DownArrow) ? -1f : Input.GetKey(KeyCode.UpArrow) ? 1f : 0f;
+
+        dx *= Time.deltaTime * moveSpeed;
+        dy *= Time.deltaTime * moveSpeed;
         if (dx != 0 || dy != 0)
         {
-            Fire();
+            if (!a)
+            {
+                Fire();
+            }
+            
+        }
+        if(dy == 0&&dx!= 0)
+        {
+            if (a)
+            {
+                Fire();
+            }
+
         }
         var x = Mathf.Clamp(transform.position.x, minX, maxX);
         var y = Mathf.Clamp(transform.position.y, minY, maxY);
@@ -96,7 +114,8 @@ public class Player : MonoBehaviour
         }
         else if (collision.CompareTag("Wall"))
         {
-
+            a = true;
+            Debug.Log("4");
         }
         else
         {
@@ -107,5 +126,13 @@ public class Player : MonoBehaviour
             Destroy(explosion, 0.4f);
             Destroy(gameObject);
         }
+    }
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Wall"))
+        {
+            a = false;
+        }
+        a = false;
     }
 }

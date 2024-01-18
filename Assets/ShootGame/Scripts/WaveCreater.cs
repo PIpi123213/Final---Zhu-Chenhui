@@ -7,7 +7,7 @@ public class WaveCreater : MonoBehaviour
     public GameObject[] enemyPFs;
     public GameObject[] wavePoints;
     public int scoreThreshold = 1000; // 设置分数阈值
-    public int fasterSpawnRate = 2;
+    public float fasterSpawnRate = 0.5f;
     float nxtWave;
     bool a = true;
     // Start is called before the first frame update
@@ -31,13 +31,17 @@ public class WaveCreater : MonoBehaviour
             nxtWave = Time.time + Random.Range(1f, 2f)/ fasterSpawnRate;
             Spawn();
         }
-        if (GameManager.score >= 50&& GameManager.score<=100)
+        if (GameManager.score >= 25&& GameManager.score<=75)
         {
-            fasterSpawnRate = 2;
+            fasterSpawnRate = 0.7f;
         }
-        else if (GameManager.score >= 100)
+        else if (GameManager.score >= 75 && GameManager.score <= 175)
         {
-            fasterSpawnRate = 3;
+            fasterSpawnRate = 0.9f;
+        }
+        else if (GameManager.score >= 175 && GameManager.score <= 1000)
+        {
+            fasterSpawnRate = 1.1f;
         }
     }
 

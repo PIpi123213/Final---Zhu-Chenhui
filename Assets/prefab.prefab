@@ -2605,7 +2605,6 @@ MonoBehaviour:
   eventDetect: {fileID: 7545170220788350501}
   decreaseSpeed: 0.1
   maxProgress: 1
-  timeLimit: 10
   currentProgress: 0.3
   progressBar: {fileID: 0}
   delayInSeconds: 5
@@ -8389,7 +8388,6 @@ MonoBehaviour:
   eventDetect: {fileID: 4072655126844826158}
   decreaseSpeed: 0.1
   maxProgress: 1
-  timeLimit: 10
   currentProgress: 0.3
   progressBar: {fileID: 0}
   delayInSeconds: 5
@@ -13360,7 +13358,6 @@ MonoBehaviour:
   eventDetect: {fileID: 8230767453932964530}
   decreaseSpeed: 0.1
   maxProgress: 1
-  timeLimit: 10
   currentProgress: 0.3
   progressBar: {fileID: 0}
   delayInSeconds: 5

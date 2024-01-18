@@ -20,7 +20,9 @@ public class Explode : MonoBehaviour
         
         if (component1.isEscaped)
             {
-                explodeforce();
+            Debug.Log("333");
+            Debug.Log(gameObject.name);
+            explodeforce();
             }
         
     }
@@ -28,7 +30,7 @@ public class Explode : MonoBehaviour
     IEnumerator DestroyAfterDelay()
     {
         yield return new WaitForSeconds(destroyDelay);
-
+        
         // Ïú»ÙÎïÌå
         Destroy(gameObject);
     }

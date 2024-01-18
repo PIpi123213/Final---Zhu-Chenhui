@@ -36,95 +36,98 @@ public class escape : MonoBehaviour
     {
         if (isEscaped)
         {
+
             Invoke("DestroyObject", delayInSeconds);
 
 
         }
-
-
-
-        if (characterController.isTrigger)
+        if (eventDetect.b)
         {
-            
-            if (eventDetect.event2.ToString()!="Defence")
+            if (characterController.isTrigger)
             {
-                
-                
-                if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
+
+                if (eventDetect.event2.ToString() != "Defence")
                 {
+                    Debug.Log(eventDetect.event2 + gameObject.name);
 
-                    isEscaped = true;
-                    characterController.PlayEscapeAnimation();
-                    characterController.isTrigger = false;
-                    
-                    
+                    if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
+                    {
 
+                        isEscaped = true;
+                        characterController.PlayEscapeAnimation();
+                        characterController.isTrigger = false;
+
+
+
+
+                    }
 
                 }
 
+                else if (eventDetect.event2.ToString() == "Defence")
+                {
+                    Debug.Log(eventDetect.event2 + gameObject.name);
+                    Canvas mainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
+
+
+                    if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
+                    {
+                        if (!isProgressBarCreated)
+                        {
+                            progressBar = Instantiate(progressBar, mainCanvas.transform);
+                            progressBar.value = Mathf.Clamp01(currentProgress);
+                            isProgressBarCreated = true;
+                        }
+
+
+
+                        //progressBar.gameObject.SetActive(true);
+                        carmove carmove = GetComponent<carmove>();
+                        if (carmove != null)
+                        {
+                            carmove.moveSpeed = 0.0f;
+
+                        }
+                        progressBar.value += 0.1f;
+
+                        characterController.PlayEscapeAnimation2();
+
+
+                        // 减少进度条
+
+
+                        // 如果时间超过限制，显示失败文本
+
+
+                    }
+                    if (progressBar.value >= maxProgress)
+                    {
+                        isEscaped = true;
+                        characterController.isTrigger = false;
+                        //progressBar.gameObject.SetActive(false);
+                        DestroyImmediate(progressBar.gameObject);
+                        isProgressBarCreated = false;
+                        characterController.SetIsEscaped(true);
+
+                    }
+                    else if (progressBar.value <= 0f)
+                    {
+                        //progressBar.gameObject.SetActive(false);
+                        DestroyImmediate(progressBar.gameObject);
+                        isProgressBarCreated = false;
+                        carmove carmove = GetComponent<carmove>();
+                        if (carmove != null && carmove.start.isstart)
+                        {
+                            carmove.moveSpeed = carmove.speed;
+                        }
+
+                    }
+
+                    progressBar.value = Mathf.MoveTowards(progressBar.value, 0f, decreaseSpeed * Time.deltaTime);
+                }
             }
-
-            else if(eventDetect.event2.ToString() == "Defence")
-            {
-                Canvas mainCanvas = GameObject.Find("MainCanvas").GetComponent<Canvas>();
-                
-
-                if (Input.anyKeyDown && Input.inputString.Length > 0 && Input.inputString[0] == eventDetect.keyname)
-                {
-                    
-                    if (!isProgressBarCreated)
-                    {
-                        progressBar = Instantiate(progressBar, mainCanvas.transform);
-                        progressBar.value = Mathf.Clamp01(currentProgress);
-                        isProgressBarCreated = true;
-                    }
-                    
-
-                    //progressBar.gameObject.SetActive(true);
-                    carmove carmove = GetComponent<carmove>();
-                    if (carmove != null)
-                    {
-                        carmove.moveSpeed = 0.0f;
-                        
-                    }
-                    progressBar.value += 0.1f;
-                    
-                    characterController.PlayEscapeAnimation2();
-                   
-
-                    // 减少进度条
-                    
-
-                    // 如果时间超过限制，显示失败文本
-                   
-
-                }
-                if (progressBar.value >= maxProgress)
-                {
-                    isEscaped = true;
-                    characterController.isTrigger = false;
-                    //progressBar.gameObject.SetActive(false);
-                    DestroyImmediate(progressBar.gameObject);
-                    isProgressBarCreated = false;
-                    characterController.SetIsEscaped(true);
-
-                }
-                else if (progressBar.value <= 0f)
-                {
-                    //progressBar.gameObject.SetActive(false);
-                    DestroyImmediate(progressBar.gameObject);
-                    isProgressBarCreated = false;
-                    carmove carmove = GetComponent<carmove>();
-                    if (carmove != null)
-                    {
-                        carmove.moveSpeed = 5.0f;
-
-                    }
-                }
-
-                progressBar.value = Mathf.MoveTowards(progressBar.value, 0f, decreaseSpeed * Time.deltaTime);
-            }     
         }
+        
         if (characterController.isDead)
         {
            

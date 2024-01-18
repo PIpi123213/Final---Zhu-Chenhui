@@ -42,7 +42,9 @@ public class Enemy : MonoBehaviour
 
         // Fire
         if(nxtFire < Time.time) {
-            nxtFire = Time.time + Random.Range(0.3f, 1f);
+            float a = 0.5f;
+            float b = 1.2f;
+            nxtFire = Time.time + Random.Range(a, b);
             Vector2 spawnPosition = new Vector2(transform.position.x, transform.position.y + 0.5f);
             var laser = Instantiate(laserPF, spawnPosition, Quaternion.identity);
             laser.transform.Rotate(0, 0, 180);
